@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:quiz_example/data/questions.dart';
 import 'package:quiz_example/questions_screen.dart';
+import 'package:quiz_example/results_screen.dart';
 
 import 'start_screen.dart';
 
@@ -11,7 +13,7 @@ class Quiz extends StatefulWidget {
 }
 
 class _QuizState extends State<Quiz> {
-  final List<String> selectedAnswers = [];
+  List<String> selectedAnswers = [];
   var activeScreen = 'start-screen';
 
   void switchScreen() {
@@ -21,9 +23,16 @@ class _QuizState extends State<Quiz> {
   }
 
   void chooseAnswer(String answer) {
+    selectedAnswers.add(answer);
+
     // it is ok to add new element to list which is defined final.
     // Final keyword does not allow only to assign
-    selectedAnswers.add(answer);
+    if (selectedAnswers.length == questions.length) {
+      setState(() {
+        selectedAnswers = [];
+        activeScreen = 'results-screen';
+      });
+    }
   }
 
   @override
@@ -32,6 +41,10 @@ class _QuizState extends State<Quiz> {
 
     if (activeScreen == 'questions-screen') {
       screenWidget = QuestionsScreen(onSelectAnswer: chooseAnswer);
+    } else if (activeScreen == 'results-screen') {
+      screenWidget = ResultsScreen(
+        choosenAnswers: selectedAnswers,
+      );
     }
 
     return MaterialApp(
