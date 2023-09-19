@@ -29,7 +29,6 @@ class _QuizState extends State<Quiz> {
     // Final keyword does not allow only to assign
     if (selectedAnswers.length == questions.length) {
       setState(() {
-        selectedAnswers = [];
         activeScreen = 'results-screen';
       });
     }
